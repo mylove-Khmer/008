@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bong Chet Top Up - វេបសាយទូទាត់ប្រាក់ហ្គេម</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-color: #0b0e14;
+            --card-bg: #151a23;
+            --card-hover: #1e2634;
+            --primary: #00ec67;
+            --primary-hover: #00c756;
+            --text-main: #ffffff;
+            --text-muted: #94a3b8;
+            --border-color: #222b3b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Kantumruy Pro', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
+        header {
+            background-color: var(--card-bg);
+            border-bottom: 1px solid var(--border-color);
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        .logo-container img {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+
+        .logo-container h1 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .menu-btn {
+            background: var(--card-hover);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            width: 38px;
+            height: 38px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        /* Container */
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            width: 100%;
+            padding: 15px;
+            flex: 1;
+        }
+
+        /* Banner Slider */
+        .banner {
+            width: 100%;
+            height: 140px;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            border: 1px solid var(--border-color);
+            position: relative;
+        }
+
+        .banner img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Section Title */
+        .section-title {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+            font-weight: 500;
+        }
+
+        /* Game Grid */
+        .game-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .game-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .game-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--primary);
+        }
+
+        .game-img {
+            width: 100%;
+            aspect-ratio: 1;
+            object-fit: cover;
+        }
+
+        .game-info {
+            padding: 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            flex: 1;
+            justify-content: space-between;
+        }
+
+        .game-name {
+            font-size: 0.8rem;
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .game-price {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .topup-btn {
+            background-color: var(--primary);
+            color: #000;
+            border: none;
+            padding: 5px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 0.75rem;
+            cursor: pointer;
+            text-align: center;
+            width: 100%;
+        }
+
+        /* Detail View */
+        .view-section {
+            display: none;
+        }
+
+        .view-section.active {
+            display: block;
+        }
+
+        .back-bar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .selected-game-header {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 12px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .selected-game-header img {
+            width: 50px;
+            height: 50px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+
+        .form-group {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .form-label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            display: block;
+            color: var(--text-main);
+        }
+
+        .form-input {
+            width: 100%;
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            padding: 10px 12px;
+            border-radius: 8px;
+            color: white;
+            font-size: 0.9rem;
+            outline: none;
+        }
+
+        .form-input:focus {
+            border-color: var(--primary);
+        }
+
+        /* Packages Grid */
+        .packages-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .package-card {
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: 0.2s;
+        }
+
+        .package-card.selected {
+            border-color: var(--primary);
+            background: rgba(0, 236, 103, 0.05);
+        }
+
+        .package-card img {
+            width: 32px;
+            height: 32px;
+            object-fit: contain;
+        }
+
+        .pkg-info .pkg-name {
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .pkg-info .pkg-price {
+            font-size: 0.75rem;
+            color: var(--primary);
+        }
+
+        /* Payment Methods */
+        .payment-methods {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .pay-method {
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            padding: 10px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .pay-method.selected {
+            border-color: var(--primary);
+            background: rgba(0, 236, 103, 0.05);
+        }
+
+        /* Checkout Bar */
+        .checkout-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--card-bg);
+            border-top: 1px solid var(--border-color);
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 600px;
+            margin: 0 auto;
+            z-index: 999;
+        }
+
+        .total-price {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .checkout-btn {
+            background: var(--primary);
+            color: #000;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+
+        /* Modal QR */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.8);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 20px;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 350px;
+            text-align: center;
+        }
+
+        .modal-content h3 {
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .qr-box {
+            background: white;
+            padding: 15px;
+            border-radius: 12px;
+            margin: 15px 0;
+            display: inline-block;
+        }
+
+        .qr-box img {
+            width: 200px;
+            height: 200px;
+        }
+
+        .bakong-id {
+            background: var(--bg-color);
+            padding: 8px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+            border: 1px dashed var(--border-color);
+        }
+
+        .close-modal {
+            background: var(--card-hover);
+            color: white;
+            border: 1px solid var(--border-color);
+            padding: 8px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-container" onclick="goHome()">
+            <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?w=100" alt="Logo">
+            <h1>Bong Chet Topup</h1>
+        </div>
+        <div class="menu-btn">
+            <i class="fa-solid fa-bars"></i>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Home View -->
+        <div id="home-view" class="view-section active">
+            <div class="banner">
+                <img src="https://images.unsplash.com/photo-1511512578047-dfb367046420?w=600" alt="Banner">
+            </div>
+
+            <div class="section-title">ហ្គេមពេញនិយម</div>
+            
+            <div class="game-grid" id="game-list">
+                <!-- Dynamically injected games -->
+            </div>
+        </div>
+
+        <!-- Detail View -->
+        <div id="detail-view" class="view-section">
+            <div class="back-bar" onclick="goHome()">
+                <i class="fa-solid fa-arrow-left"></i> ត្រឡប់ក្រោយ
+            </div>
+
+            <div class="selected-game-header">
+                <img id="detail-game-img" src="" alt="">
+                <div>
+                    <h3 id="detail-game-name" style="font-size: 0.95rem;"></h3>
+                    <p style="font-size: 0.75rem; color: var(--text-muted);">បញ្ចូលលឿន ស្វ័យប្រវត្តិ ២៤/៧</p>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">១. បញ្ចូល Player ID</label>
+                <input type="text" class="form-input" id="player-id-input" placeholder="ឧ. 83738390207">
+                <span id="player-status" style="font-size: 0.75rem; color: var(--primary); margin-top: 5px; display: block;"></span>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">២. ជ្រើសរើសកញ្ចប់</label>
+                <div class="packages-grid" id="packages-list">
+                    <!-- Dynamically injected packages -->
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">៣. វិធីសាស្ត្រទូទាត់ប្រាក់</label>
+                <div class="payment-methods">
+                    <div class="pay-method selected" onclick="selectPayment('bakong')">
+                        <i class="fa-solid fa-qrcode" style="color: var(--primary);"></i> Bakong KHQR
+                    </div>
+                    <div class="pay-method" onclick="selectPayment('aba')">
+                        <i class="fa-solid fa-wallet" style="color: #0084d5;"></i> ABA KHQR
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Checkout Footer Bar -->
+    <div class="checkout-bar" id="checkout-footer" style="display: none;">
+        <div>
+            <div style="font-size: 0.75rem; color: var(--text-muted);">សរុបរួម</div>
+            <div class="total-price" id="total-display">$0.00</div>
+        </div>
+        <button class="checkout-btn" onclick="processCheckout()">បង់ប្រាក់ឥឡូវនេះ</button>
+    </div>
+
+    <!-- QR Code Modal -->
+    <div class="modal" id="qr-modal">
+        <div class="modal-content">
+            <h3>ស្កេនដើម្បីបង់ប្រាក់</h3>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px;">សូមប្រើប្រាស់ Bakong ឬ ABA ដើម្បីស្កេនទូទាត់</p>
+            
+            <div class="bakong-id">
+                Bakong ID: <b>mon_samnang@bkrt</b>
+            </div>
+
+            <div class="qr-box">
+                <img id="qr-image" src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=00020101021228220010mon_samnang@bkrt5204000053038405802KH5912Mon Samnang6006Phnom Penh" alt="QR Code">
+            </div>
+
+            <div style="font-size: 0.85rem; font-weight: 600; margin-bottom: 15px;" id="modal-amount">ទឹកប្រាក់: $0.00</div>
+            
+            <button class="close-modal" onclick="closeModal()">បិទ</button>
+        </div>
+    </div>
+
+    <script>
+        const games = [
+            { id: 'mlbb', name: 'Mobile Legends Cambodia', price: '$0.81', img: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=200' },
+            { id: 'ff', name: 'Free Fire ខ្មែរ', price: '$0.30', img: 'https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=200' },
+            { id: 'pubg', name: 'PUBG Mobile Global', price: '$0.94', img: 'https://images.unsplash.com/photo-1560253023-3ec5d502959f?w=200' },
+            { id: 'hok', name: 'Honor of Kings', price: '$0.81', img: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=200' },
+            { id: 'magic', name: 'Magic Chess GoGo', price: '$0.84', img: 'https://images.unsplash.com/photo-1612287233002-91d0f53267c7?w=200' },
+            { id: 'telegram', name: 'Telegram Premium', price: '$0.82', img: 'https://images.unsplash.com/photo-1614680376593-902f749f7ffc?w=200' }
+        ];
+
+        const packagesData = {
+            'ff': [
+                { name: '25 Diamonds', price: 0.30 },
+                { name: '100 Diamonds', price: 0.94 },
+                { name: '310 Diamonds', price: 2.79 },
+                { name: '520 Diamonds', price: 4.64 },
+                { name: '1060 Diamonds', price: 9.03 },
+                { name: 'Weekly Member', price: 0.68 }
+            ],
+            'default': [
+                { name: 'កញ្ចប់តូច (Small)', price: 0.50 },
+                { name: 'កញ្ចប់មធ្យម (Medium)', price: 1.50 },
+                { name: 'កញ្ចប់ធំ (Large)', price: 3.50 },
+                { name: 'កញ្ចប់ពិសេស (VIP)', price: 7.00 }
+            ]
+        };
+
+        let selectedGame = null;
+        let selectedPackage = null;
+        let selectedPaymentMethod = 'bakong';
+
+        function renderGames() {
+            const list = document.getElementById('game-list');
+            list.innerHTML = games.map(g => `
+                <div class="game-card" onclick="selectGame('${g.id}')">
+                    <img class="game-img" src="${g.img}" alt="${g.name}">
+                    <div class="game-info">
+                        <div>
+                            <div class="game-name">${g.name}</div>
+                            <div class="game-price">ចាប់ពី ${g.price}</div>
+                        </div>
+                        <button class="topup-btn">TopUp</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function selectGame(id) {
+            selectedGame = games.find(g => g.id === id);
+            document.getElementById('detail-game-name').innerText = selectedGame.name;
+            document.getElementById('detail-game-img').src = selectedGame.img;
+
+            const pkgs = packagesData[id] || packagesData['default'];
+            selectedPackage = pkgs[0];
+            
+            const pkgList = document.getElementById('packages-list');
+            pkgList.innerHTML = pkgs.map((p, idx) => `
+                <div class="package-card ${idx === 0 ? 'selected' : ''}" onclick="selectPkg(this, ${p.price}, '${p.name}')">
+                    <img src="https://cdn-icons-png.flaticon.com/512/1164/1164917.png" alt="icon">
+                    <div class="pkg-info">
+                        <div class="pkg-name">${p.name}</div>
+                        <div class="pkg-price">$${p.price.toFixed(2)}</div>
+                    </div>
+                </div>
+            `).join('');
+
+            updateTotal();
+
+            document.getElementById('home-view').classList.remove('active');
+            document.getElementById('detail-view').classList.add('active');
+            document.getElementById('checkout-footer').style.display = 'flex';
+            window.scrollTo(0,0);
+        }
+
+        function goHome() {
+            document.getElementById('detail-view').classList.remove('active');
+            document.getElementById('home-view').classList.add('active');
+            document.getElementById('checkout-footer').style.display = 'none';
+        }
+
+        function selectPkg(element, price, name) {
+            document.querySelectorAll('.package-card').forEach(el => el.classList.remove('selected'));
+            element.classList.add('selected');
+            selectedPackage = { name, price };
+            updateTotal();
+        }
+
+        function selectPayment(method) {
+            selectedPaymentMethod = method;
+            document.querySelectorAll('.pay-method').forEach(el => el.classList.remove('selected'));
+            event.currentTarget.classList.add('selected');
+        }
+
+        function updateTotal() {
+            if (selectedPackage) {
+                document.getElementById('total-display').innerText = `$${selectedPackage.price.toFixed(2)}`;
+            }
+        }
+
+        document.getElementById('player-id-input').addEventListener('input', function(e) {
+            const val = e.target.value;
+            const status = document.getElementById('player-status');
+            if (val.length > 5) {
+                status.innerText = "✓ រកឃើញគណនី: Samrang Gaming";
+            } else {
+                status.innerText = "សូមបញ្ចូល Player ID ឱ្យបានត្រឹមត្រូវ";
+            }
+        });
+
+        function processCheckout() {
+            const playerId = document.getElementById('player-id-input').value;
+            if (!playerId) {
+                alert('សូមបញ្ចូល Player ID របស់អ្នកជាមុនសិន!');
+                document.getElementById('player-id-input').focus();
+                return;
+            }
+
+            document.getElementById('modal-amount').innerText = `ទឹកប្រាក់ត្រូវបង់: $${selectedPackage.price.toFixed(2)} (${selectedPackage.name})`;
+            document.getElementById('qr-modal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('qr-modal').style.display = 'none';
+        }
+
+        renderGames();
+    </script>
+</body>
+</html>
